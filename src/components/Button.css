@@ -1,0 +1,17 @@
+.legend_btn{
+    position:absolute;
+    bottom:50%;
+    left:0.4rem;
+    z-index: 4;
+}
+
+.btn{
+    padding:0.5rem;
+    color:rgb(250, 250, 250);
+    background-color:rgb(26, 24, 110);
+    font-size:0.7rem;
+    font-weight:600;
+    border:none;
+    border-radius:0.7rem;
+    cursor:pointer;
+}

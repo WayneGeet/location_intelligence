@@ -1,0 +1,28 @@
+*{
+  padding:0;
+  margin:0;
+  box-sizing: border-box;
+  font-family:"montserrat", sans-serif;
+}
+
+h4{
+  font-size:1rem;
+  color:rgb(56,56,56)
+}
+
+h3{
+  font-size:1.5rem;
+  color:rgb(56,56,56);
+  line-height: 1.2rem;
+  margin:1.2rem 0;
+}
+
+a{
+  color:rgb(56,56,56);
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin:0% 15%;
+}

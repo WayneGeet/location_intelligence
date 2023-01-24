@@ -1,0 +1,32 @@
+
+.legend{
+    position:absolute;
+    bottom:1.5rem;
+    right:1rem;
+    min-height:14rem;
+    width:10rem;
+    background-color:rgba(255, 255, 255, 0.7);
+    border-radius:10px;
+    z-index: 2;    
+}
+
+.legend_hid{
+    display:none;
+}
+
+.layer_item{
+    list-style:none;
+    font-size:0.9rem;
+    padding-left:0.5rem;
+    margin:4px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start
+}
+
+.lg_title{
+    font-size:1rem;
+    color:rgb(12, 12, 12);
+    text-align: center;
+}
