@@ -40,7 +40,7 @@ const Card = () => {
                  animate={{x:0}}
                  initial={{x:800}}
                  transition={{ease:"easeOut", duration:0.8}}
-                 whileHover={{scale:1.1}}
+                 whileHover={{scale:1.1, duration:0.5}}
                  >
                     <div className="c_top">
                         <h3 className="c_title">{card.title}</h3>
