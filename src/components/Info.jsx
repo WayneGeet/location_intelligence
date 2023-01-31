@@ -5,8 +5,9 @@ const Info = (props) => {
   return (
     <div>
         <div className="info">
-        <h2>Directions from Portland</h2>
-        <div className="message">{props.message}</div>
+        <h2>Time: {props.time/60}mins</h2>
+        <p>Distance: {props.distance} m</p>
+        
       </div>
     </div>
   )

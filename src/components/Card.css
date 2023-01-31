@@ -1,0 +1,47 @@
+.applications{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:1.2rem;
+
+}
+
+.c_card{
+    border:1px solid white;
+    padding:.9rem;
+    border-radius:.7rem;
+    min-width:12rem;
+    position:relative;
+    min-height:17rem;
+    border-bottom-left-radius: 7rem;
+    border-bottom-right-radius: 7rem;
+    left:5rem;
+    cursor:default;
+}
+
+.c_top{
+    display:flex;
+    align-items:center;
+    justify-content: center;
+}
+
+.c_top span{
+    color:rgb(226,190,68);
+}
+
+.c_title{
+    font-size:1.2rem;
+    text-align:center;
+}
+
+.c_content{
+    font-size:0.9rem;
+    font-weight:400;
+    position:absolute;
+    top:4.5rem;
+    right:0.1rem;
+    word-spacing:2px;
+    color:white;
+    padding:5px;
+    text-align:center;
+    
+}

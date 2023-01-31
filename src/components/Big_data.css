@@ -1,0 +1,49 @@
+.products{
+    background-color:rgb(6,5,53);
+    position:relative;
+    top:-2rem;
+    height:100vh;
+}
+
+.grid_b{
+    display:grid;
+    grid-template-columns:30% 70%;
+    gap:3rem;
+}
+
+.sbi{
+    position:relative;
+    top:-3rem;
+    color:rgb(241,89,192);
+    font-weight:600;
+    font-size:2rem;
+    letter-spacing:2px;
+}
+
+.product_content{
+    color:white;
+    font-size:1rem;
+    font-weight:200;
+    text-align:justify;
+    position:relative;
+    top:-1rem;
+}
+
+.learn_more{
+    padding:0.7rem 3rem 0.7rem 3rem;
+    background:linear-gradient(45deg, rgb(241,89,192), rgb(224, 206, 48));
+    border:1px solid white;
+    text-align:center;
+    color:rgb(12, 5, 37);
+    font-weight:800;
+    cursor:pointer;
+    position:relative;
+    top:4rem;
+}
+
+.b_content{
+    position:relative;
+    top:10rem
+}
+
+/* Cards */

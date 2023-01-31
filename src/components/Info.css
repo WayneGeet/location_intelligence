@@ -1,16 +1,16 @@
 .info{
     position:absolute;
     z-index:3;
-    background-color:rgba(245, 238, 238, 0.3);
+    background-color:rgba(233, 233, 233, 0.3);
     backdrop-filter:blur(10px);
     border-radius:10px;
     border:2px solid #eee;
-    top:1rem;
-    left:0.8rem;
+    bottom:1rem;
+    right:0.8rem;
     padding:2rem;
 }
 
 .msg{
     font-size:1rem;
-    color:#222;
+    color:rgb(209, 243, 13);
 }

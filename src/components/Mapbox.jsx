@@ -1,9 +1,13 @@
 import React, {useState, useRef, useEffect, useCallback} from 'react';
 // import styled from "styled-components";
-import ReactMapGL, {Layer, Marker, FullscreenControl, GeolocateControl} from "react-map-gl";
+import ReactMapGL, {Layer, Marker, FullscreenControl, GeolocateControl, NavigationControl} from "react-map-gl";
 import "./Mapbox.css";
 // import Legend from "./Legend";
 import Info from "./Info";
+
+import Bike from '@mui/icons-material/DirectionsBike';
+import Drive from '@mui/icons-material/DriveEta';
+import Walk from '@mui/icons-material/DirectionsRun';
 
 
 
@@ -29,15 +33,21 @@ const Mapbox = () => {
     const mapRef = useRef();
     const [instructions, setInstructions] = useState([])
     const [profile, setProfile] = useState("driving")
+    const [color, setColor] = useState("blue")
     const [currentPosition, setCurrentPosition] = useState([])
+    const [distance, setDistance] = useState(null)
+    const [time, setTime] = useState(null)
+    const geoRef = useRef()
+    
     // const [road,setRoad] = useState({})
 
-    useEffect(()=>{
-      navigator.geolocation.getCurrentPosition((position)=>{
-        setCurrentPosition([position.coords.longitude, position.coords.latitude])
-      });
-      console.log(currentPosition)
-    },[message])
+    // useEffect(()=>{
+    //   navigator.geolocation.getCurrentPosition((position)=>{
+    //     setCurrentPosition([position.coords.longitude, position.coords.latitude])
+    //   });
+    //   console.log(currentPosition)
+    // },[message])
+  
     
 
     const handleMove = evt => {
@@ -48,7 +58,7 @@ const Mapbox = () => {
 
     
     // getting route
-    const getRoute = async (start, end, profile) =>{
+    const getRoute = async (start, end, profile,color) =>{
       const map = mapRef.current.getMap()
       const api = await fetch(
         `https://api.mapbox.com/directions/v5/mapbox/${profile}/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${process.env.REACT_APP_ACCESS_TOKEN}`,
@@ -73,6 +83,16 @@ const Mapbox = () => {
       }
 
       else{
+        switch(profile){
+          case "cycling":setColor("yellow");
+          break;
+          case "driving":setColor("red");
+          break;
+          case "walking":setColor("purple");
+          break;
+          default:
+            break;
+        }
         map.addLayer({
           id:"route",
           type:"line",
@@ -85,20 +105,21 @@ const Mapbox = () => {
             "line-cap":"round"
           },
           paint:{
-            "line-color":"blue",
-            "line-width":4.5,
+            "line-color":color,
+            "line-width":4,
             "line-opacity":0.75
           }
         });
       }      
       // every time we update the route, we also update the instructions
       setInstructions(data.legs[0].steps)
+      setDistance(data.distance)
+      setTime(data.duration)
       } 
   
   return (
     <section className="map_wrapper">
-      <Info message={message}/>
-      
+      <Info distance={distance} time={time}/>
 
       <ReactMapGL
         ref={mapRef}
@@ -108,9 +129,9 @@ const Mapbox = () => {
         onViewportChange = {newViewport => setViewport(newViewport)}
         onMove={handleMove}
         // onMouseMove = {handleHover}
-        // onLoad={()=>{                 
-          
-        // }}
+        onLoad={()=>{
+          setCurrentPosition(geoRef.current.trigger())
+        }}
 
         onClick = {(e)=>{
           const map = mapRef.current.getMap()
@@ -130,6 +151,7 @@ const Mapbox = () => {
               }
             ]
           };
+
           if (map.getLayer('end')) {
             map.getSource('end').setData(end);
           } else {
@@ -158,7 +180,8 @@ const Mapbox = () => {
               }
             });
           };
-          getRoute(currentPosition, coord, profile)
+          setEnd(coord)
+          getRoute(currentPosition, coord, profile, color)
           
           
           }}
@@ -167,7 +190,13 @@ const Mapbox = () => {
       containerId="map_wrapper"/>  
 
       <GeolocateControl
-      enableHighAccuracy={true}/>       
+      ref={geoRef}
+      enableHighAccuracy={true}
+      onGeolocate={(e)=>{
+        setCurrentPosition([e.coords.longitude, e.coords.latitude])
+      }}/>       
+
+      <NavigationControl/>
           
           {/* <Layer
           source={road}></Layer> */}
@@ -189,8 +218,43 @@ const Mapbox = () => {
       </div>
 
       {/* <Legend /> */}
+
+      <article className="mode">
+            <div className="card"
+            onClick={()=>{
+              setProfile("cycling")
+              setColor("orange")
+              getRoute(start,end, profile, color)
+            }}>
+                <h3 className="title">Bicycle</h3>
+                <div className="profile"><Bike/></div>
+            </div>
+
+            <div className="card"
+            onClick={()=>{
+              setProfile("driving")
+              setColor("blue")
+              getRoute(start, end, profile, color)
+            }}>
+                <h3 className="title">Drive</h3>
+                <div className="profile"><Drive/></div>
+            </div>
+
+            <div className="card"
+            onClick={()=>{
+              setProfile("walking")
+              setColor("red")
+              getRoute(start, end, profile, color)
+            }}>
+                <h3 className="title">Walk</h3>
+                <div className="profile"><Walk/></div>
+            </div>
+
+
+        </article>
       
     </section>
+
 
     
   )
