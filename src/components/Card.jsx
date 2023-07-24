@@ -32,9 +32,10 @@ const Card = () => {
 
   return (
     <div className="applications">
-        {card_data.map((card)=>{
+        {card_data.map((card, key)=>{
             return(
                 <motion.div
+                key={key}
                  className="c_card"
                  id={card_data.title}
                  animate={{x:0}}
