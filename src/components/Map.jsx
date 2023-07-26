@@ -1,36 +1,26 @@
 import React, {useState, useEffect, useRef} from 'react';
 import ReactMapGl, {FullscreenControl, GeolocateControl, Marker, Source, Layer, NavigationControl} from 'react-map-gl';
 import Instructions from "./Instructions";
-import Places from "./Places"
+import Places from "./Places";
 
 function Map() {
   const [viewState, setViewState] = useState({
     longitude: -73,
     latitude: 42,
-    zoom: 7.5
+    zoom: 6.5
   });
 
   const [start, setStart] = useState([-73, 42]);
-  const [end, setEnd] = useState([-73, 42.7]);
+  const [end, setEnd] = useState([-73, 42]);
   const [coords, setCoords] = useState([]);
   const [steps, setSteps] = useState([])
-  
-  const [value, setValue] = useState("")
-
-  const [place, setPlace] = useState([])
 
   const GeolocateControlRef = useRef();
 
   useEffect(()=>{
     getRoute()
-    GeolocateControlRef.current?.trigger()
+    // GeolocateControlRef.current?.trigger()
   }, [end, GeolocateControlRef])
-
-
-  useEffect(()=> {
-    getPlaces()
-  }, [value])
-
 
   const getRoute = async () => {
     const response = await fetch(`https://api.mapbox.com/directions/v5/mapbox/driving/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`);
@@ -41,12 +31,6 @@ function Map() {
     setSteps(steps)
   }
 
-  // fetching places
-  const getPlaces = async () => {
-    const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${value}.json?autocomplete=true&fuzzymatch=true&access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`)
-    const data = await response.json()
-    setPlace(data.features)
-  }
   // 1. geojson
 const geojson = {
   "type":"FeatureCollection", 
@@ -108,17 +92,14 @@ const layerEndpoint = {
     setEnd(endPoint)
   }
 
-  const handlePlace = (place) => {
-    setEnd(place.geometry.coordinates)
-  }
-
   return (
-    <section className="relative">
+    <section className="relative w-full h-full">
       <ReactMapGl
         {...viewState}
         onClick={handleClick}
         onMove={evt => setViewState(evt.viewState)}
         mapStyle="mapbox://styles/wayne-geet/clk9alnap00oh01qy18um4etm"
+        // navigation-dark => mapbox://styles/wayne-geet/cljy8wzzp005m01pf5ooxh8oz
         mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
         style={{width:"100vw", height:"100vh"}}
       >
@@ -135,7 +116,7 @@ const layerEndpoint = {
         <Marker longitude={start[0]} latitude={start[1]}/>
       </ReactMapGl>;
 
-      <article className="bg-slate-800 rounded-md px-5 py-3 max-h-[50vh] absolute top-5 left-5 overflow-y-auto max-w-sm">
+      {steps && <article className="bg-slate-800 rounded-md px-5 py-3 max-h-[50vh] absolute top-5 left-5 overflow-y-auto max-w-sm">
         {steps.map((item, i) => {
           return(
             <div key={i} className="flex flex-col gap-4">
@@ -143,30 +124,10 @@ const layerEndpoint = {
             </div>
           )
         })}
-      </article>
+      </article>}
 
-      <section className="absolute right-10 top-5 ">
-        <form >
-          <input
-          placeholder="Nairobi, Kenya"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          className="rounded-md px-4 py-2 text-gray-600 text-[0.9rem] w-[15rem]"
-          type="text" name="place" id="place" />
-        </form>
-
-        <article className="mt-4 rounded-md">
-          {place?.map((item) => {
-            return(
-              <div
-              onClick={(e)=>handlePlace(item)}
-              key={item.id} className="justify-start w-[15rem] max-w-[15rem]">
-                <Places text={item.text} place_name = {item.place_name}/>
-              </div>
-            )
-          })}
-        </article>
-      </section>
+      {/* Search Bar and places goes here */}
+      <Places setEnd={setEnd}/>
   </section>
   )
 }

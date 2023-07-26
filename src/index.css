@@ -25,7 +25,18 @@ a{
   color:rgb(56,56,56);
 }
 
-.cut{
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 30px;
+  background: rgb(255, 95, 188);
+  transform-origin: 0%;
+}
+
+.text_cut{
   display:-webkit-box;
   -webkit-box-orient:vertical;
   -webkit-line-clamp:1;
